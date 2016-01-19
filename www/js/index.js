@@ -1128,8 +1128,6 @@ function onDeviceReady() {
                 aggiungiPostazione(nuovapostazione);
             }
             //inviaPostazioneToServer(nuovapostazione);
-            $("#home").trigger("create");
-            location.href = '#home';
         }
     });
 
@@ -1160,10 +1158,14 @@ function onDeviceReady() {
                             function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione,latitudine,longitudine) VALUES (?,?,?,?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,'Ancora da Visionare',latitudine_corrente,longitudine_corrente]); },
                             onDbError,
                             function () { //alert("ispezione "+codice_ispezione+" inserita");
+                                $("#home").trigger("create");
+                                location.href = '#home';
                             }
                         );
                     }
                 }
+                $("#home").trigger("create");
+                location.href = '#home';
             }
         );
     }

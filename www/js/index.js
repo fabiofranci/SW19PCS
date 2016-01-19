@@ -1097,37 +1097,24 @@ function onDeviceReady() {
 
         } else {
             //ora devo prendere le coordinate
-            try {
+            alert("posizione:");
                 navigator.geolocation.getCurrentPosition(function(position){
                     //success
                     //latitudine_corrente=position.coords.latitude;
                     //longitudine_corrente=position.coords.longitude;
                     alert("Success geoloc");
 
-                    alert('Latitude: '          + position.coords.latitude          + '\n' +
-                        'Longitude: '         + position.coords.longitude         + '\n' +
-                        'Altitude: '          + position.coords.altitude          + '\n' +
-                        'Accuracy: '          + position.coords.accuracy          + '\n' +
-                        'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-                        'Heading: '           + position.coords.heading           + '\n' +
-                        'Speed: '             + position.coords.speed             + '\n' +
-                        'Timestamp: '         + position.timestamp                + '\n');
-
                     alert("Success geoloc");
                     latitudine_corrente='100';
                     longitudine_corrente='10';
                     aggiungiPostazione(nuovapostazione);
-                }, function(position){
+                }, function(err){
                     //errore
                     alert("Errore geoloc");
                     latitudine_corrente='VUOTA';
                     longitudine_corrente='VUOTA';
                     aggiungiPostazione(nuovapostazione);
                 });
-            } catch (err) {
-                alert("Sono in locale, niente posizione");
-                aggiungiPostazione(nuovapostazione);
-            }
             //inviaPostazioneToServer(nuovapostazione);
         }
     });

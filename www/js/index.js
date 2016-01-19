@@ -125,7 +125,7 @@ function onDeviceReady() {
     var onSuccessGeo = function(position) {
         latitudine_corrente=position.coords.latitude;
         longitudine_corrente=position.coords.longitude;
-
+/*
         alert('Latitude: '          + position.coords.latitude          + '\n' +
             'Longitude: '         + position.coords.longitude         + '\n' +
             'Altitude: '          + position.coords.altitude          + '\n' +
@@ -134,7 +134,7 @@ function onDeviceReady() {
             'Heading: '           + position.coords.heading           + '\n' +
             'Speed: '             + position.coords.speed             + '\n' +
             'Timestamp: '         + position.timestamp                + '\n');
-
+*/
     };
 
 // onError Callback receives a PositionError object
@@ -142,14 +142,6 @@ function onDeviceReady() {
     function onErrorGeo(error) {
         alert('code: '    + error.code    + '\n' +
             'message: ' + error.message + '\n');
-    }
-
-    function getPosizione() {
-        try {
-            navigator.geolocation.getCurrentPosition(onSuccessGeo, onErrorGeo);
-        } catch (err) {
-            alert("Sono in locale, niente posizione");
-        }
     }
 
 
@@ -339,7 +331,7 @@ function onDeviceReady() {
     }
 
     function inviaPostazioneToServer(nuovapostazione) {
-        $.post( serviceURL + 'settablepostazioni.php', { id_sede:nuovapostazione.id_sede_cliente, id_servizio:nuovapostazione.id_tipo_servizio, codice_postazione:nuovapostazione.codice_postazione, nome:nuovapostazione.nome, ultimo_aggiornamento:nuova_postazione.ultimo_aggiornamento })
+        $.post( serviceURL + 'settablepostazioni.php', { id_sede:nuovapostazione.id_sede_cliente, id_servizio:nuovapostazione.id_tipo_servizio, codice_postazione:nuovapostazione.codice_postazione, nome:nuovapostazione.nome, ultimo_aggiornamento:nuova_postazione.ultimo_aggiornamento,latitudine_p:nuova_postazione.latitudine_p,longitudine_p:nuova_postazione.longitudine_p })
             .done(function( data ) {
                 sincronizzaDaServer();
             });
@@ -1103,7 +1095,14 @@ function onDeviceReady() {
         if (errore) {
 
         } else {
-            aggiungiPostazione(nuovapostazione);
+            //ora devo prendere le coordinate
+            try {
+                navigator.geolocation.getCurrentPosition(onSuccessGeo, onErrorGeo);
+                aggiungiPostazione(nuovapostazione);
+            } catch (err) {
+                alert("Sono in locale, niente posizione");
+                aggiungiPostazione(nuovapostazione);
+            }
             //inviaPostazioneToServer(nuovapostazione);
             $("#home").trigger("create");
             location.href = '#home';
@@ -1111,6 +1110,9 @@ function onDeviceReady() {
     });
 
     function aggiungiPostazione(nuovapostazione) {
+        alert("Latitudine:latitudine_corrente");
+        alert("Longitudine:longitudine_corrente");
+
         db.transaction(
             function (tx) {
                 tx.executeSql("INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome, ultimo_aggiornamento, latitudine_p, longitudine_p) VALUES (?,?,?,?,?,?,?)",[nuovapostazione.id_sede_cliente, nuovapostazione.id_tipo_servizio, nuovapostazione.codice_postazione, nuovapostazione.nome, nuovapostazione.ultimo_aggiornamento,latitudine_corrente,longitudine_corrente]);

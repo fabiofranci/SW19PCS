@@ -125,7 +125,7 @@ function onDeviceReady() {
     var onSuccessGeo = function(position) {
         latitudine_corrente=position.coords.latitude;
         longitudine_corrente=position.coords.longitude;
-/*
+
         alert('Latitude: '          + position.coords.latitude          + '\n' +
             'Longitude: '         + position.coords.longitude         + '\n' +
             'Altitude: '          + position.coords.altitude          + '\n' +
@@ -134,7 +134,7 @@ function onDeviceReady() {
             'Heading: '           + position.coords.heading           + '\n' +
             'Speed: '             + position.coords.speed             + '\n' +
             'Timestamp: '         + position.timestamp                + '\n');
-*/
+
     };
 
 // onError Callback receives a PositionError object
@@ -1097,6 +1097,7 @@ function onDeviceReady() {
         } else {
             //ora devo prendere le coordinate
             try {
+                alert("Lancio geolocation");
                 navigator.geolocation.getCurrentPosition(onSuccessGeo, onErrorGeo);
                 aggiungiPostazione(nuovapostazione);
             } catch (err) {
@@ -1110,8 +1111,8 @@ function onDeviceReady() {
     });
 
     function aggiungiPostazione(nuovapostazione) {
-        alert("Latitudine:latitudine_corrente");
-        alert("Longitudine:longitudine_corrente");
+        alert("Latitudine:"+latitudine_corrente);
+        alert("Longitudine:"+longitudine_corrente);
 
         db.transaction(
             function (tx) {

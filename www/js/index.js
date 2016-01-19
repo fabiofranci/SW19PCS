@@ -32,6 +32,7 @@ $(document).ready(function() {
 });
 
 function onDeviceReady() {
+    alert("DEVICEUUID:"+device.uuid);
     // do everything here.
     $(document).bind("pagebeforechange", function( event, data ) {
         $.mobile.pageData = (data && data.options && data.options.pageData)

@@ -32,7 +32,6 @@ $(document).ready(function() {
 });
 
 function onDeviceReady() {
-    var DEVICEUUID=device.uuid;
     // do everything here.
     $(document).bind("pagebeforechange", function( event, data ) {
         $.mobile.pageData = (data && data.options && data.options.pageData)
@@ -126,7 +125,7 @@ function onDeviceReady() {
     var onSuccessGeo = function(position) {
         latitudine_corrente=position.coords.latitude;
         longitudine_corrente=position.coords.longitude;
-
+/*
         alert('Latitude: '          + position.coords.latitude          + '\n' +
             'Longitude: '         + position.coords.longitude         + '\n' +
             'Altitude: '          + position.coords.altitude          + '\n' +
@@ -135,7 +134,7 @@ function onDeviceReady() {
             'Heading: '           + position.coords.heading           + '\n' +
             'Speed: '             + position.coords.speed             + '\n' +
             'Timestamp: '         + position.timestamp                + '\n');
-
+*/
     };
 
 // onError Callback receives a PositionError object
@@ -332,7 +331,7 @@ function onDeviceReady() {
     }
 
     function inviaPostazioneToServer(nuovapostazione) {
-        $.post( serviceURL + 'settablepostazioni.php', { DEVICEUUID:DEVICEUUID, id_sede:nuovapostazione.id_sede_cliente, id_servizio:nuovapostazione.id_tipo_servizio, codice_postazione:nuovapostazione.codice_postazione, nome:nuovapostazione.nome, ultimo_aggiornamento:nuova_postazione.ultimo_aggiornamento,latitudine_p:nuova_postazione.latitudine_p,longitudine_p:nuova_postazione.longitudine_p })
+        $.post( serviceURL + 'settablepostazioni.php', { id_sede:nuovapostazione.id_sede_cliente, id_servizio:nuovapostazione.id_tipo_servizio, codice_postazione:nuovapostazione.codice_postazione, nome:nuovapostazione.nome, ultimo_aggiornamento:nuova_postazione.ultimo_aggiornamento })
             .done(function( data ) {
                 sincronizzaDaServer();
             });
@@ -1096,32 +1095,16 @@ function onDeviceReady() {
         if (errore) {
 
         } else {
-            //ora devo prendere le coordinate
-            alert("posizione:");
-                navigator.geolocation.getCurrentPosition(function(position){
-                    //success
-                    //latitudine_corrente=position.coords.latitude;
-                    //longitudine_corrente=position.coords.longitude;
-                    alert("Success geoloc");
-
-                    alert("Success geoloc");
-                    latitudine_corrente='100';
-                    longitudine_corrente='10';
-                    aggiungiPostazione(nuovapostazione);
-                }, function(err){
-                    //errore
-                    alert("Errore geoloc");
-                    latitudine_corrente='VUOTA';
-                    longitudine_corrente='VUOTA';
-                    aggiungiPostazione(nuovapostazione);
-                });
+            aggiungiPostazione(nuovapostazione);
             //inviaPostazioneToServer(nuovapostazione);
+            $("#home").trigger("create");
+            location.href = '#home';
         }
     });
 
     function aggiungiPostazione(nuovapostazione) {
-        alert("Latitudine:"+latitudine_corrente);
-        alert("Longitudine:"+longitudine_corrente);
+        alert("Latitudine:latitudine_corrente");
+        alert("Longitudine:longitudine_corrente");
 
         db.transaction(
             function (tx) {
@@ -1146,14 +1129,10 @@ function onDeviceReady() {
                             function (tx3) { tx3.executeSql("INSERT OR REPLACE INTO LOCAL_ISPEZIONI (codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,stato_postazione,latitudine,longitudine) VALUES (?,?,?,?,?,?,?)", [codice_ispezione,codice_visita,codice_postazione,ultimo_aggiornamento,'Ancora da Visionare',latitudine_corrente,longitudine_corrente]); },
                             onDbError,
                             function () { //alert("ispezione "+codice_ispezione+" inserita");
-                                $("#home").trigger("create");
-                                location.href = '#home';
                             }
                         );
                     }
                 }
-                $("#home").trigger("create");
-                location.href = '#home';
             }
         );
     }

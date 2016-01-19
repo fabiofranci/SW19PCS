@@ -1104,9 +1104,6 @@ function onDeviceReady() {
     });
 
     function aggiungiPostazione(nuovapostazione) {
-        alert("Latitudine:latitudine_corrente");
-        alert("Longitudine:longitudine_corrente");
-
         db.transaction(
             function (tx) {
                 tx.executeSql("INSERT OR REPLACE INTO LOCAL_POSTAZIONI (id_sede, id_servizio, codice_postazione, nome, ultimo_aggiornamento, latitudine_p, longitudine_p) VALUES (?,?,?,?,?,?,?)",[nuovapostazione.id_sede_cliente, nuovapostazione.id_tipo_servizio, nuovapostazione.codice_postazione, nuovapostazione.nome, nuovapostazione.ultimo_aggiornamento,latitudine_corrente,longitudine_corrente]);

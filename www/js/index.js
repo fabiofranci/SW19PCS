@@ -32,7 +32,6 @@ $(document).ready(function() {
 });
 
 function onDeviceReady() {
-    var DEVICEUUID=device.uuid;
     // do everything here.
     $(document).bind("pagebeforechange", function( event, data ) {
         $.mobile.pageData = (data && data.options && data.options.pageData)
@@ -70,6 +69,7 @@ function onDeviceReady() {
     // (i) GLOBALI
     //---------------------------------------------------------------------------------------
 
+    var DEVICEUUID=device.uuid;
     var firmacliente='';
     var global_ultimo_aggiornamento='';
 
@@ -332,7 +332,7 @@ function onDeviceReady() {
     }
 
     function inviaPostazioneToServer(nuovapostazione) {
-        $.post( serviceURL + 'settablepostazioni.php', { id_sede:nuovapostazione.id_sede_cliente, id_servizio:nuovapostazione.id_tipo_servizio, codice_postazione:nuovapostazione.codice_postazione, nome:nuovapostazione.nome, ultimo_aggiornamento:nuova_postazione.ultimo_aggiornamento })
+        $.post( serviceURL + 'settablepostazioni.php', { DEVICEUUID:DEVICEUUID, id_sede:nuovapostazione.id_sede_cliente, id_servizio:nuovapostazione.id_tipo_servizio, codice_postazione:nuovapostazione.codice_postazione, nome:nuovapostazione.nome, ultimo_aggiornamento:nuova_postazione.ultimo_aggiornamento })
             .done(function( data ) {
                 sincronizzaDaServer();
             });

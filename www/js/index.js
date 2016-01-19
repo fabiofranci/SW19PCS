@@ -1100,8 +1100,9 @@ function onDeviceReady() {
             try {
                 navigator.geolocation.getCurrentPosition(function(position){
                     //success
-                    latitudine_corrente=position.coords.latitude;
-                    longitudine_corrente=position.coords.longitude;
+                    //latitudine_corrente=position.coords.latitude;
+                    //longitudine_corrente=position.coords.longitude;
+                    alert("Success geoloc");
 
                     alert('Latitude: '          + position.coords.latitude          + '\n' +
                         'Longitude: '         + position.coords.longitude         + '\n' +

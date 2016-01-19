@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, target-densitydpi=medium-dpi, user-scalable=0" />
+    <!--<link rel="stylesheet" type="text/css" href="lib/jqm/jquery.mobile-1.4.5.min.css" />-->
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
+    <link rel="stylesheet" type="text/css" href="css/mycss.css" />
+    <!--<link rel="stylesheet" type="text/css" href="css/index.css" />-->
+    <script type="text/javascript" src="lib/jquery/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/index2.js"></script>
+    <script type="text/javascript" src="js/jSignature.min.js"></script>
+    <script type="text/javascript" src="lib/jqm/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="js/jqm.page.params.js"></script>
+    <title>Hello World</title>
+</head>
+<body>
+
+
+<!-- // (i) pagina login -->
+
+<!--// (f) pagina login -->
+
+<!-- // (i) pagina principale -->
+<div data-role="page" id="home">
+    <div data-role="header">
+        <a data-iconpos="notext" data-role="button" data-icon="flat-lock" title="Login">Login</a>
+        <h1>HOME</h1>
+        <a data-iconpos="notext" href="#example" data-role="button" data-icon="flat-menu"></a>
+    </div>
+    <div data-role="content" role="main">
+        <button id="SCAN" data-icon="flat-menu" data-theme="g">SCAN</button>
+        <br/>
+
+        <div data-role="collapsible-set" data-theme="b" data-content-theme="b">
+            <div data-role="collapsible" data-collapsed-icon="flat-time" data-expanded-icon="flat-cross" data-collapsed="false">
+                <h3>Gestione Database</h3>
+                <p id="ultimo_aggiornamento_content"> Verifico il database ... </p>
+                <!--<button id="pulisciDb" data-icon="flat-cross" data-theme="f">AZZERA DB</button>-->
+                <button id="sincronizza" data-icon="flat-cmd" data-theme="f">SINCRONIZZA DB</button>
+                <button id="sincronizza_zero" data-icon="flat-cmd" data-theme="f">SINCRONIZZA DB DA ZERO</button>
+                <div id="homeclienti">Clienti: -+-+-+-+-+- </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--// (f) pagina principale -->
+
+
+
+<!-- (i) nuova postazione -->
+<div data-role="page" id="nuova_postazione">
+    <div data-role="header">
+        <a data-iconpos="notext"  href="#home" data-transition="slide" data-direction="reverse" data-role="button" data-icon="home" title="Home">Home</a>
+        <h1>Postazione</h1>
+    </div>
+
+    <div data-role="content" role="main">
+        <form id="nuovapostazione_form" class="input-group">
+
+            <div data-role="fieldcontain">
+                <div id="sede_cliente_container">
+                    Cliente<br/>
+                    <select name="id_sede_cliente" id="id_sede_cliente">
+                    </select>
+                </div>
+            </div>
+            <div data-role="fieldcontain">
+                <div id="tipo_servizio_container">
+                    Tipo Servizio<br/>
+                    <select name="id_tipo_servizio" id="id_tipo_servizio">
+                    </select>
+                </div>
+                <div data-role="fieldcontain">
+                    Nome Postazione<br/>
+                    <input id="nome" name="nome" type="text" placeholder="Nome postazione" />
+                </div>
+                <div data-role="fieldcontain">
+                    Codice Postazione<br/>
+                    <input id="codice_postazione" readonly name="codice_postazione" type="text" placeholder="Codice Postazione" />
+                </div>
+                <div data-role="fieldcontain">
+                    <div class="ui-block-a"><button data-icon="flat-checkround" data-theme="b" id="nuovapostazione_submit" name="nuovapostazione_submit">Salva</button></div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<!-- (f) nuova postazione -->
+
+<!-- (i)  postazione trovata -->
+<div data-role="page" id="postazione_trovata">
+    <div data-role="header">
+        <a data-iconpos="notext"  href="#home" data-transition="slide" data-direction="reverse" data-role="button" data-icon="home" title="Home">Home</a>
+        <h1>Postazione</h1>
+    </div>
+    <div data-role="content" role="main">
+        <div data-role="fieldcontain">
+            <div id="postazione_trovata_cliente"></div>
+            <div id="postazione_trovata_tipo_servizio"></div>
+            <div id="postazione_trovata_nome"></div>
+            <div id="postazione_trovata_CodicePostazione"></div>
+            <div id="postazione_trovata_visite_in_corso">
+                <div id="postazione_trovata_visite_list" ></div>
+            </div>
+        </div>
+
+        <!--<button id="archivio" data-icon="flat-calendar" data-theme="e">Archivio</button>-->
+
+    </div>
+</div>
+<!-- (f)  postazione trovata -->
+
+
+<!-- (i) singola visita -->
+<div data-role="page" id="singola_visita">
+    <div data-role="header">
+        <a data-iconpos="notext"  href="#home" data-transition="slide" data-direction="reverse" data-role="button" data-icon="home" title="Home">Home</a>
+        <h1>Visita</h1>
+        <a data-iconpos="notext"  href="#fine_visita" data-transition="slide" data-role="button" data-icon="flat-checkround" title="Fine">Fine</a>
+    </div>
+    <div data-role="content" role="main">
+        <div id="singola_visita_cliente"></div>
+        <div id="singola_visita_data_inizio"></div>
+        <div id="singola_visita_conto_postazioni_totali"></div>
+        <div id="singola_visita_conto_postazioni_davedere"></div>
+        <fieldset class="ui-grid-a">
+            <div class="ui-block-a"><button id="SCAN_VISITA" data-icon="flat-menu" data-theme="b">SCAN</button></div>
+            <div class="ui-block-a"><button id="FINE_VISITA" data-icon="flat-checkround" data-theme="d">FINE VISITA</button></div>
+            <!--<div class="ui-block-a"><button id="getPosizione" data-icon="flat-location" data-theme="c">Posizione</button></div>-->
+        </fieldset>
+        <div id="postazionimancanti">
+            <div id="postazionimancanti_list" ></div>
+        </div>
+    </div>
+</div>
+<!-- (f) singola visita -->
+
+<!-- (i) postazione mancante -->
+<div data-role="page" id="postazione_mancante">
+    <div data-role="header">
+        <h1>Postazione Mancante</h1>
+    </div>
+    <div data-role="content" role="main">
+        <div id="postazione_mancante_cliente"></div>
+        <div id="postazione_mancante_tipo_servizio"></div>
+        <div id="postazione_mancante_nome"></div>
+        <div id="postazione_mancante_CodicePostazione"></div>
+        <form id="FORMpostazionemancante">
+            <fieldset data-role="collapsible">
+                <legend>Stato Postazione:</legend>
+                <div data-role='controlgroup'>
+                    <input type="radio" name="PM_stato_postazione" id="pm-stato_postazione-choice-1" value="Mancante" />
+                    <label for="pm-stato_postazione-choice-1">Mancante</label>
+                    <input type="radio" name="PM_stato_postazione" id="pm-stato_postazione-choice-2" value="Inaccessibile" />
+                    <label for="pm-stato_postazione-choice-2">Inaccessibile</label>
+                </div>
+            </fieldset>
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><input type="submit" name="PM-SALVA" id="PM-SALVA" value="SALVA" class="btn" data-theme="b"/></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<!-- (f) postazione mancante -->
+
+<!--
+<fieldset data-role="collapsible">
+    <legend>Legend</legend>
+    <label for="textinput-f">Text Input:</label>
+    <input type="text" name="textinput-f" id="textinput-f" placeholder="Text input" value="">
+    <div data-role="controlgroup">
+        <input type="checkbox" name="checkbox-1-a" id="checkbox-1-a">
+        <label for="checkbox-1-a">One</label>
+        <input type="checkbox" name="checkbox-2-a" id="checkbox-2-a">
+        <label for="checkbox-2-a">Two</label>
+        <input type="checkbox" name="checkbox-3-a" id="checkbox-3-a">
+        <label for="checkbox-3-a">Three</label>
+    </div>
+</fieldset>
+-->
+
+<!-- (i) ispezioneA1 -->
+<div data-role="page" id="ispezioneA1">
+    <div data-role="header" >
+        <h1>Ispezione Tipo A1</h1>
+        <a data-iconpos="notext"  href="#home" data-transition="slide" data-direction="reverse" data-role="button" data-icon="flat-menu" title="Visita">Visita</a>
+        <!--<a id="ispezione_salva" data-icon="check" href="#home" data-transition="slide">Salva</a>-->
+        <a data-iconpos="notext"  href="#fine_visita" data-transition="slide" data-role="button" data-icon="flat-checkround" title="Fine">Fine</a>
+
+    </div>
+    <div data-role="content" role="main">
+        <div class="nomecliente"></div>
+        <div class="nomepostazione"></div>
+        <div class="serviziopostazione"></div>
+        <br/>
+        <form id="FORMispezioneA1">
+            <fieldset data-role="collapsible">
+                <legend>Stato Postazione:</legend>
+                <div data-role='controlgroup'>
+                    <input type="radio" name="A1_stato_postazione" id="a1-stato_postazione-choice-1" value="Nuova" />
+                    <label for="a1-stato_postazione-choice-1">Nuova</label>
+                    <input type="radio" name="A1_stato_postazione" id="a1-stato_postazione-choice-2" value="Buono" />
+                    <label for="a1-stato_postazione-choice-2">Buono</label>
+                    <input type="radio" name="A1_stato_postazione" id="a1-stato_postazione-choice-3" value="Ricollocata per rottura" />
+                    <label for="a1-stato_postazione-choice-3">Ricollocata per rottura</label>
+                    <input type="radio" name="A1_stato_postazione" id="a1-stato_postazione-choice-4" value="Ricollocata per mancanza" />
+                    <label for="a1-stato_postazione-choice-4">Ricollocata per mancanza</label>
+                    <input type="radio" name="A1_stato_postazione" id="a1-stato_postazione-choice-5" value="Ricollocata per richiesta del cliente" />
+                    <label for="a1-stato_postazione-choice-5">Ricollocata per richiesta del cliente</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Stato Esca Roditori:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="A1_stato_esca_roditori" id="a1-stato_esca_roditori-choice-1" value="integra" />
+                    <label for="a1-stato_esca_roditori-choice-1">Integra</label>
+
+                    <input type="radio" name="A1_stato_esca_roditori" id="a1-stato_esca_roditori-choice-2" value="erosa da target"  />
+                    <label for="a1-stato_esca_roditori-choice-2">Erosa da target</label>
+
+                    <input type="radio" name="A1_stato_esca_roditori" id="a1-stato_esca_roditori-choice-3" value="erosa per altri motivi"  />
+                    <label for="a1-stato_esca_roditori-choice-3">Erosa per altri motivi</label>
+
+                    <input type="radio" name="A1_stato_esca_roditori" id="a1-stato_esca_roditori-choice-4" value="esaurita"  />
+                    <label for="a1-stato_esca_roditori-choice-4">Esaurita</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Collocato Adescante Roditori:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="A1_collocato_adescante_roditori" id="a1-collocato_adescante_roditori-choice-1" value="Non ricollocato" />
+                    <label for="a1-collocato_adescante_roditori-choice-1">Non ricollocato</label>
+                    <input type="radio" name="A1_collocato_adescante_roditori" id="a1-collocato_adescante_roditori-choice-2" value="Avvelenato broamdiolone"  />
+                    <label for="a1-collocato_adescante_roditori-choice-2">Avvelenato broamdiolone</label>
+                    <input type="radio" name="A1_collocato_adescante_roditori" id="a1-collocato_adescante_roditori-choice-3" value="Avvelenato brodifacoum"  />
+                    <label for="a1-collocato_adescante_roditori-choice-3">Avvelenato brodifacoum</label>
+                    <input type="radio" name="A1_collocato_adescante_roditori" id="a1-collocato_adescante_roditori-choice-4" value="Non avvelenato"  />
+                    <label for="a1-collocato_adescante_roditori-choice-4">Non avvelenato</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><input type="submit" name="a1-SALVA" id="a1-SALVA" value="SALVA" class="btn" data-theme="b"/></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<!-- (f) ispezioneA1 -->
+
+<!-- (i) ispezioneA2 -->
+<div data-role="page" id="ispezioneA2">
+    <div data-role="header" >
+        <h1>Ispezione Tipo A2</h1>
+        <a data-iconpos="notext"  href="#home" data-transition="slide" data-direction="reverse" data-role="button" data-icon="flat-menu" title="Visita">Visita</a>
+        <!--<a id="ispezione_salva" data-icon="check" href="#home" data-transition="slide">Salva</a>-->
+        <a data-iconpos="notext"  href="#fine_visita" data-transition="slide" data-role="button" data-icon="flat-checkround" title="Fine">Fine</a>
+    </div>
+    <div data-role="content" role="main">
+        <div class="nomecliente"></div>
+        <div class="nomepostazione"></div>
+        <div class="serviziopostazione"></div>
+        <br/>
+        <form id="FORMispezioneA2">
+            <fieldset data-role="collapsible">
+                <legend>Stato Postazione:</legend>
+                <div data-role='controlgroup'>
+                    <input type="radio" name="A2_stato_postazione" id="a2-stato_postazione-choice-1" value="Nuova" />
+                    <label for="a2-stato_postazione-choice-1">Nuova</label>
+                    <input type="radio" name="A2_stato_postazione" id="a2-stato_postazione-choice-2" value="Buono" />
+                    <label for="a2-stato_postazione-choice-2">Buono</label>
+                    <input type="radio" name="A2_stato_postazione" id="a2-stato_postazione-choice-3" value="Ricollocata per rottura" />
+                    <label for="a2-stato_postazione-choice-3">Ricollocata per rottura</label>
+                    <input type="radio" name="A2_stato_postazione" id="a2-stato_postazione-choice-4" value="Ricollocata per mancanza" />
+                    <label for="a2-stato_postazione-choice-4">Ricollocata per mancanza</label>
+                    <input type="radio" name="A2_stato_postazione" id="a2-stato_postazione-choice-5" value="Ricollocata per richiesta del cliente" />
+                    <label for="a2-stato_postazione-choice-5">Ricollocata per richiesta del cliente</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Stato Esca Roditori:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="A2_stato_esca_roditori" id="a2-stato_esca_roditori-choice-1" value="integra" />
+                    <label for="a2-stato_esca_roditori-choice-1">Integra</label>
+
+                    <input type="radio" name="A2_stato_esca_roditori" id="a2-stato_esca_roditori-choice-2" value="erosa da target"  />
+                    <label for="a2-stato_esca_roditori-choice-2">Erosa da target</label>
+
+                    <input type="radio" name="A2_stato_esca_roditori" id="a2-stato_esca_roditori-choice-3" value="erosa per altri motivi"  />
+                    <label for="a2-stato_esca_roditori-choice-3">Erosa per altri motivi</label>
+
+                    <input type="radio" name="A2_stato_esca_roditori" id="a2-stato_esca_roditori-choice-4" value="esaurita"  />
+                    <label for="a2-stato_esca_roditori-choice-4">Esaurita</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Collocato Adescante Roditori:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="A2_collocato_adescante_roditori" id="a2-collocato_adescante_roditori-choice-1" value="Non ricollocato" />
+                    <label for="a2-collocato_adescante_roditori-choice-1">Non ricollocato</label>
+                    <input type="radio" name="A2_collocato_adescante_roditori" id="a2-collocato_adescante_roditori-choice-2" value="Avvelenato broamdiolone"  />
+                    <label for="a2-collocato_adescante_roditori-choice-2">Avvelenato broamdiolone</label>
+                    <input type="radio" name="A2_collocato_adescante_roditori" id="a2-collocato_adescante_roditori-choice-3" value="Avvelenato brodifacoum"  />
+                    <label for="a2-collocato_adescante_roditori-choice-3">Avvelenato brodifacoum</label>
+                    <input type="radio" name="A2_collocato_adescante_roditori" id="a2-collocato_adescante_roditori-choice-4" value="Non avvelenato"  />
+                    <label for="a2-collocato_adescante_roditori-choice-4">Non avvelenato</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><input type="submit" name="a2-SALVA" id="a2-SALVA" value="SALVA" class="btn" data-theme="b"/></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<!-- (f) ispezioneA2 -->
+
+<!-- (i) ispezioneB -->
+<div data-role="page" id="ispezioneB">
+    <div data-role="header" >
+        <h1>Ispezione Tipo B</h1>
+        <a data-iconpos="notext"  href="#home" data-transition="slide" data-direction="reverse" data-role="button" data-icon="flat-menu" title="Visita">Visita</a>
+        <!--<a id="ispezione_salva" data-icon="check" href="#home" data-transition="slide">Salva</a>-->
+        <a data-iconpos="notext"  href="#fine_visita" data-transition="slide" data-role="button" data-icon="flat-checkround" title="Fine">Fine</a>
+    </div>
+    <div data-role="content" role="main">
+        <div class="nomecliente"></div>
+        <div class="nomepostazione"></div>
+        <div class="serviziopostazione"></div>
+        <br/>
+        <form id="FORMispezioneB">
+            <fieldset data-role="collapsible">
+                <legend>Stato Postazione:</legend>
+                <div data-role='controlgroup'>
+                    <input type="radio" name="B_stato_postazione" id="b-stato_postazione-choice-1" value="Nuova" />
+                    <label for="b-stato_postazione-choice-1">Nuova</label>
+                    <input type="radio" name="B_stato_postazione" id="b-stato_postazione-choice-2" value="Buono" />
+                    <label for="b-stato_postazione-choice-2">Buono</label>
+                    <input type="radio" name="B_stato_postazione" id="b-stato_postazione-choice-3" value="Ricollocata per rottura" />
+                    <label for="b-stato_postazione-choice-3">Ricollocata per rottura</label>
+                    <input type="radio" name="B_stato_postazione" id="b-stato_postazione-choice-4" value="Ricollocata per mancanza" />
+                    <label for="b-stato_postazione-choice-4">Ricollocata per mancanza</label>
+                    <input type="radio" name="B_stato_postazione" id="b-stato_postazione-choice-5" value="Ricollocata per richiesta del cliente" />
+                    <label for="b-stato_postazione-choice-5">Ricollocata per richiesta del cliente</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Stato Esca Roditori:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="B_stato_esca_roditori" id="b-stato_esca_roditori-choice-1" value="integra" />
+                    <label for="b-stato_esca_roditori-choice-1">Integra</label>
+
+                    <input type="radio" name="B_stato_esca_roditori" id="b-stato_esca_roditori-choice-2" value="erosa da target"  />
+                    <label for="b-stato_esca_roditori-choice-2">Erosa da target</label>
+
+                    <input type="radio" name="B_stato_esca_roditori" id="b-stato_esca_roditori-choice-3" value="erosa per altri motivi"  />
+                    <label for="b-stato_esca_roditori-choice-3">Erosa per altri motivi</label>
+
+                    <input type="radio" name="B_stato_esca_roditori" id="b-stato_esca_roditori-choice-4" value="esaurita"  />
+                    <label for="b-stato_esca_roditori-choice-4">Esaurita</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Collocato Adescante Roditori:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="B_collocato_adescante_roditori" id="b-collocato_adescante_roditori-choice-1" value="Non ricollocato" />
+                    <label for="b-collocato_adescante_roditori-choice-1">Non ricollocato</label>
+                    <input type="radio" name="B_collocato_adescante_roditori" id="b-collocato_adescante_roditori-choice-2" value="Avvelenato broamdiolone"  />
+                    <label for="b-collocato_adescante_roditori-choice-2">Avvelenato broamdiolone</label>
+                    <input type="radio" name="B_collocato_adescante_roditori" id="b-collocato_adescante_roditori-choice-3" value="Avvelenato brodifacoum"  />
+                    <label for="b-collocato_adescante_roditori-choice-3">Avvelenato brodifacoum</label>
+                    <input type="radio" name="B_collocato_adescante_roditori" id="b-collocato_adescante_roditori-choice-4" value="Non avvelenato"  />
+                    <label for="b-collocato_adescante_roditori-choice-4">Non avvelenato</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Stato Piastra Insetti Striscianti:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="B_stato_piastra_collante_insetti_striscianti" id="b-stato_piastra_collante_insetti_striscianti-choice-1" value="integra" />
+                    <label for="b-stato_piastra_collante_insetti_striscianti-choice-1">Integra</label>
+                    <input type="radio" name="B_stato_piastra_collante_insetti_striscianti" id="b-stato_piastra_collante_insetti_striscianti-choice-2" value="rovinata"  />
+                    <label for="b-stato_piastra_collante_insetti_striscianti-choice-2">Rovinata</label>
+                    <input type="radio" name="B_stato_piastra_collante_insetti_striscianti" id="b-stato_piastra_collante_insetti_striscianti-choice-3" value="presenza target"  />
+                    <label for="b-stato_piastra_collante_insetti_striscianti-choice-3">Presenza Target</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Presenza Target:</legend>
+                <div data-role="controlgroup">
+                    Ooteche orientalis: <input type="text" name="ooteche_orientalis" id="ooteche_orientalis"/><br/>
+                    Adulti orientalis: <input type="text" name="adulti_orientalis" id="adulti_orientalis"/><br/>
+                    Ooteche germanica: <input type="text" name="ooteche_germanica" id="ooteche_germanica"/><br/>
+                    Adulti germanica: <input type="text" name="adulti_germanica" id="adulti_germanica"/><br/>
+                    Ooteche supella longipalpa: <input type="text" name="ooteche_supella_longipalpa" id="ooteche_supella_longipalpa"/><br/>
+                    Adulti supella longipalpa: <input type="text" name="adulti_supella_longipalpa" id="adulti_supella_longipalpa"/><br/>
+                    Ooteche periplaneta americana: <input type="text" name="ooteche_periplaneta_americana" id="ooteche_periplaneta_americana"/><br/>
+                    Adulti periplaneta americana: <input type="text" name="adulti_periplaneta_americana" id="adulti_periplaneta_americana"/><br/>
+                </div>
+            </fieldset>
+            <br/>
+
+
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><input type="submit" name="b-SALVA" id="b-SALVA" value="SALVA" class="btn" data-theme="b"/></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<!-- (f) ispezioneB -->
+
+<!-- (i) ispezioneC -->
+<div data-role="page" id="ispezioneC">
+    <div data-role="header" >
+        <h1>Ispezione Tipo C</h1>
+        <a data-iconpos="notext"  href="#home" data-transition="slide" data-direction="reverse" data-role="button" data-icon="flat-menu" title="Visita">Visita</a>
+        <!--<a id="ispezione_salva" data-icon="check" href="#home" data-transition="slide">Salva</a>-->
+        <a data-iconpos="notext"  href="#fine_visita" data-transition="slide" data-role="button" data-icon="flat-checkround" title="Fine">Fine</a>
+    </div>
+    <div data-role="content" role="main">
+        <div class="nomecliente"></div>
+        <div class="nomepostazione"></div>
+        <div class="serviziopostazione"></div>
+        <br/>
+        <form id="FORMispezioneC">
+            <fieldset data-role="collapsible">
+                <legend>Stato Postazione:</legend>
+                <div data-role='controlgroup'>
+                    <input type="radio" name="C_stato_postazione" id="c-stato_postazione-choice-1" value="Nuova" />
+                    <label for="c-stato_postazione-choice-1">Nuova</label>
+                    <input type="radio" name="C_stato_postazione" id="c-stato_postazione-choice-2" value="Buono" />
+                    <label for="c-stato_postazione-choice-2">Buono</label>
+                    <input type="radio" name="C_stato_postazione" id="c-stato_postazione-choice-3" value="Ricollocata per rottura" />
+                    <label for="c-stato_postazione-choice-3">Ricollocata per rottura</label>
+                    <input type="radio" name="C_stato_postazione" id="c-stato_postazione-choice-4" value="Ricollocata per mancanza" />
+                    <label for="c-stato_postazione-choice-4">Ricollocata per mancanza</label>
+                    <input type="radio" name="C_stato_postazione" id="c-stato_postazione-choice-5" value="Ricollocata per richiesta del cliente" />
+                    <label for="c-stato_postazione-choice-5">Ricollocata per richiesta del cliente</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Stato Piastra Insetti Volanti:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="C_stato_piastra_insetti_volanti" id="c-stato_piastra_insetti_volanti-1" value="libera" />
+                    <label for="c-stato_piastra_insetti_volanti-1">Libera</label>
+                    <input type="radio" name="C_stato_piastra_insetti_volanti" id="c-stato_piastra_insetti_volanti-2" value="presenza target"  />
+                    <label for="c-stato_piastra_insetti_volanti-2">Presenza target</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Presenza Muscidi:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="C_presenza_muscidi" id="c-presenza_muscidi-1" value="Nessuna" />
+                    <label for="c-presenza_muscidi-1">Nessuna</label>
+                    <input type="radio" name="C_presenza_muscidi" id="c-presenza_muscidi-2" value="da 0 a 10" />
+                    <label for="c-presenza_muscidi-2">da 0 a 10</label>
+                    <input type="radio" name="C_presenza_muscidi" id="c-presenza_muscidi-3" value="da 10 a 20" />
+                    <label for="c-presenza_muscidi-3">da 10 a 20</label>
+                    <input type="radio" name="C_presenza_muscidi" id="c-presenza_muscidi-4" value="superiore a 20" />
+                    <label for="c-presenza_muscidi-4">superiore a 20</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Presenza Imenotteri Vespidi:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="C_presenza_imenotteri_vespidi" id="c-presenza_imenotteri_vespidi-1" value="Nessuna" />
+                    <label for="c-presenza_imenotteri_vespidi-1">Nessuna</label>
+                    <input type="radio" name="C_presenza_imenotteri_vespidi" id="c-presenza_imenotteri_vespidi-2" value="da 0 a 10" />
+                    <label for="c-presenza_imenotteri_vespidi-2">da 0 a 10</label>
+                    <input type="radio" name="C_presenza_imenotteri_vespidi" id="c-presenza_imenotteri_vespidi-3" value="da 10 a 20" />
+                    <label for="c-presenza_imenotteri_vespidi-3">da 10 a 20</label>
+                    <input type="radio" name="C_presenza_imenotteri_vespidi" id="c-presenza_imenotteri_vespidi-4" value="superiore a 20" />
+                    <label for="c-presenza_imenotteri_vespidi-4">superiore a 20</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Presenza Imenotteri Calabronidi:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="C_presenza_imenotteri_calabronidi" id="c-presenza_imenotteri_calabronidi-1" value="Nessuna" />
+                    <label for="c-presenza_imenotteri_calabronidi-1">Nessuna</label>
+                    <input type="radio" name="C_presenza_imenotteri_calabronidi" id="c-presenza_imenotteri_calabronidi-2" value="da 0 a 10" />
+                    <label for="c-presenza_imenotteri_calabronidi-2">da 0 a 10</label>
+                    <input type="radio" name="C_presenza_imenotteri_calabronidi" id="c-presenza_imenotteri_calabronidi-3" value="da 10 a 20" />
+                    <label for="c-presenza_imenotteri_calabronidi-3">da 10 a 20</label>
+                    <input type="radio" name="C_presenza_imenotteri_calabronidi" id="c-presenza_imenotteri_calabronidi-4" value="superiore a 20" />
+                    <label for="c-presenza_imenotteri_calabronidi-4">superiore a 20</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Presenza Dittere:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="C_presenza_dittere" id="c-presenza_dittere-1" value="Nessuna" />
+                    <label for="c-presenza_dittere-1">Nessuna</label>
+                    <input type="radio" name="C_presenza_dittere" id="c-presenza_dittere-2" value="da 0 a 10" />
+                    <label for="c-presenza_dittere-2">da 0 a 10</label>
+                    <input type="radio" name="C_presenza_dittere" id="c-presenza_dittere-3" value="da 10 a 20" />
+                    <label for="c-presenza_dittere-3">da 10 a 20</label>
+                    <input type="radio" name="C_presenza_dittere" id="c-presenza_dittere-4" value="superiore a 20" />
+                    <label for="c-presenza_dittere-4">superiore a 20</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Presenza Altro Tipo di Insetti:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="C_presenza_altri_tipi_insetti" id="c-presenza_altri_tipi_insetti-1" value="Nessuna" />
+                    <label for="c-presenza_altri_tipi_insetti-1">Nessuna</label>
+                    <input type="radio" name="C_presenza_altri_tipi_insetti" id="c-presenza_altri_tipi_insetti-2" value="da 0 a 10" />
+                    <label for="c-presenza_altri_tipi_insetti-2">da 0 a 10</label>
+                    <input type="radio" name="C_presenza_altri_tipi_insetti" id="c-presenza_altri_tipi_insetti-3" value="da 10 a 20" />
+                    <label for="c-presenza_altri_tipi_insetti-3">da 10 a 20</label>
+                    <input type="radio" name="C_presenza_altri_tipi_insetti" id="c-presenza_altri_tipi_insetti-4" value="superiore a 20" />
+                    <label for="c-presenza_altri_tipi_insetti-4">superiore a 20</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><input type="submit" name="c-SALVA" id="c-SALVA" value="SALVA" class="btn" data-theme="b"/></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<!-- (f) ispezioneC -->
+
+<!-- (i) ispezioneE -->
+<div data-role="page" id="ispezioneE">
+    <div data-role="header" >
+        <h1>Ispezione Tipo E</h1>
+        <a data-iconpos="notext"  href="#home" data-transition="slide" data-direction="reverse" data-role="button" data-icon="flat-menu" title="Visita">Visita</a>
+        <!--<a id="ispezione_salva" data-icon="check" href="#home" data-transition="slide">Salva</a>-->
+        <a data-iconpos="notext"  href="#fine_visita" data-transition="slide" data-role="button" data-icon="flat-checkround" title="Fine">Fine</a>
+
+    </div>
+    <div data-role="content" role="main">
+        <div class="nomecliente"></div>
+        <div class="nomepostazione"></div>
+        <div class="serviziopostazione"></div>
+        <br/>
+        <form id="FORMispezioneE">
+            <fieldset data-role="collapsible">
+                <legend>Stato Postazione:</legend>
+                <div data-role='controlgroup'>
+                    <input type="radio" name="E_stato_postazione" id="e-stato_postazione-choice-1" value="Nuova" />
+                    <label for="e-stato_postazione-choice-1">Nuova</label>
+                    <input type="radio" name="E_stato_postazione" id="e-stato_postazione-choice-2" value="Buono" />
+                    <label for="e-stato_postazione-choice-2">Buono</label>
+                    <input type="radio" name="E_stato_postazione" id="e-stato_postazione-choice-3" value="Ricollocata per rottura" />
+                    <label for="e-stato_postazione-choice-3">Ricollocata per rottura</label>
+                    <input type="radio" name="E_stato_postazione" id="e-stato_postazione-choice-4" value="Ricollocata per mancanza" />
+                    <label for="e-stato_postazione-choice-4">Ricollocata per mancanza</label>
+                    <input type="radio" name="E_stato_postazione" id="e-stato_postazione-choice-5" value="Ricollocata per richiesta del cliente" />
+                    <label for="e-stato_postazione-choice-5">Ricollocata per richiesta del cliente</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Presenza Target:</legend>
+                <div data-role="controlgroup">
+                    <input type="radio" name="E_presenza_target_lepidotteri" id="e-presenza-target-choice-1" value="Nessuno" />
+                    <label for="e-presenza-target-choice-1">Nessuno (0)</label>
+
+                    <input type="radio" name="E_presenza_target_lepidotteri" id="e-presenza-target-choice-2" value="Nella norma da 1 a 4"  />
+                    <label for="e-presenza-target-choice-2">Nella norma (da 1 a 4)</label>
+
+                    <input type="radio" name="E_presenza_target_lepidotteri" id="e-presenza-target-choice-3" value="Da intervento oltre 4"  />
+                    <label for="e-presenza-target-choice-3">Da intervento (oltre 4)</label>
+
+                    Tipo Target: <input type="text" name="E_tipo_target_lepidotteri" id="e-tipo-target"/>
+
+                </div>
+            </fieldset>
+
+            <fieldset class="ui-grid-a">
+                <div class="ui-block-a"><input type="submit" name="e-SALVA" id="e-SALVA" value="SALVA" class="btn" data-theme="b"/></div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<!-- (f) ispezioneE -->
+
+
+<!-- (i) fine visita -->
+<div data-role="page" id="fine_visita">
+    <div data-role="header" >
+        <h1>Certificato</h1>
+    </div>
+    <div data-role="content" role="main">
+        <form id="finevisitaFORM" name="finevisitaFORM">
+            <fieldset data-role="collapsible">
+                <legend>Aree e Normativa</legend>
+                <div data-role="controlgroup">
+                    <input type="checkbox" name="c1a" id="c1a" class="custom" />
+                    <label for="c1a">Aree Industriali</label>
+
+                    <input type="checkbox" name="c2a" id="c2a" class="custom" />
+                    <label for="c2a">Aree Condominiali</label>
+
+                    <input type="checkbox" name="c3a" id="c3a" class="custom" />
+                    <label for="c3a">Comm. Pubblici</label>
+
+                    <input type="checkbox" name="c4a" id="c4a" class="custom" />
+                    <label for="c4a">D.Lgs 81/08</label>
+
+                    <input type="checkbox" name="c5a" id="c5a" class="custom" />
+                    <label for="c5a">Reg.C.E 852/04</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Servizio</legend>
+                <div data-role="controlgroup">
+                    <input type="checkbox" name="c1b" id="c1b" class="custom" />
+                    <label for="c1b">Disinfestazione</label>
+
+                    <input type="checkbox" name="c2b" id="c2b" class="custom" />
+                    <label for="c2b">Derattizzazione</label>
+
+                    <input type="checkbox" name="c3b" id="c3b" class="custom" />
+                    <label for="c3b">Disinfezione</label>
+
+                    <input type="checkbox" name="c4b" id="c4b" class="custom" />
+                    <label for="c4b">Tratt. Fitoiatrici</label>
+
+                    <input type="checkbox" name="c5b" id="c5b" class="custom" />
+                    <label for="c5b">Antipiccioni</label>
+
+                    <input type="checkbox" name="c6b" id="c6b" class="custom" />
+                    <label for="c6b">Diserbo</label>
+
+                    <input type="checkbox" name="c7b" id="c7b" class="custom" />
+                    <label for="c7b">Monitoraggio</label>
+
+                    <input type="checkbox" name="c8b" id="c8b" class="custom" />
+                    <label for="c8b">Igienizzazione</label>
+
+                    <input type="checkbox" name="c9b" id="c9b" class="custom" />
+                    <label for="c9b">Altro</label>
+
+                    <input type="checkbox" name="c10b" id="c10b" class="custom" />
+                    <label for="c10b">Pacchetto Igiene e Salubrità come da Contratto</label>
+
+                    <input type="checkbox" name="c11b" id="c11b" class="custom" />
+                    <label for="c11b">Area Interna</label>
+
+                    <input type="checkbox" name="c12b" id="c12b" class="custom" />
+                    <label for="c12b">Area Esterna</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Target</legend>
+                <div data-role="controlgroup">
+                    <input type="checkbox" name="c13b" id="c13b" class="custom" />
+                    <label for="c13b">Roditori</label>
+
+                    <input type="checkbox" name="c14b" id="c14b" class="custom" />
+                    <label for="c14b">Ins. Striscianti</label>
+
+                    <input type="checkbox" name="c15b" id="c15b" class="custom" />
+                    <label for="c15b">Ins. Volanti</label>
+
+                    <input type="checkbox" name="c16b" id="c16b" class="custom" />
+                    <label for="c16b">Cimex</label>
+
+                    <input type="checkbox" name="c17b" id="c17b" class="custom" />
+                    <label for="c17b">Tarme</label>
+
+                    <input type="checkbox" name="c18b" id="c18b" class="custom" />
+                    <label for="c18b">Altro: </label>
+                    <label for="c18btesto">Specificare: </label>
+                    <input type="text" name="c18btesto" id="c18btesto"/>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>L/A</legend>
+                <div data-role="controlgroup">
+                    <input type="checkbox" name="c1c" id="c1c" class="custom" />
+                    <label for="c1c">Antilarvale</label>
+
+                    <input type="checkbox" name="c2c" id="c2c" class="custom" />
+                    <label for="c2c">Adulticida</label>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Tipo di Insetto</legend>
+                <div data-role="controlgroup">
+                    <input type="checkbox" name="c1d" id="c1d" class="custom" />
+                    <label for="c1d">Blattoidei</label>
+                    <input type="checkbox" name="c2d" id="c2d" class="custom" />
+                    <label for="c2d">Emitteri</label>
+                    <input type="checkbox" name="c3d" id="c3d" class="custom" />
+                    <label for="c3d">Dittere</label>
+                    <input type="checkbox" name="c4d" id="c4d" class="custom" />
+                    <label for="c4d">Muscidi</label>
+                    <input type="checkbox" name="c5d" id="c5d" class="custom" />
+                    <label for="c5d">Imenotteri</label>
+
+                    <input type="checkbox" name="c6d" id="c6d" class="custom" />
+                    <label for="c6d">Altro: </label>
+                    <label for="c6dtesto">Specificare: </label>
+                    <input type="text" name="c6dtesto" id="c6dtesto"/>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Coformulati</legend>
+                <div data-role="controlgroup">
+                    <input type="checkbox" name="c1e" id="c1e" class="custom" />
+                    <label for="c1e">Rodenticida</label>
+                    <input type="checkbox" name="c2e" id="c2e" class="custom" />
+                    <label for="c2e">Organofosforici</label>
+                    <input type="checkbox" name="c3e" id="c3e" class="custom" />
+                    <label for="c3e">Piretroidi</label>
+                    <input type="checkbox" name="c4e" id="c4e" class="custom" />
+                    <label for="c4e">Carbammati</label>
+                    <input type="checkbox" name="c6e" id="c6e" class="custom" />
+                    <label for="c6e">Altro: </label>
+                    <label for="c7etesto">Specificare principio attivo: </label>
+                    <input type="text" name="c7etesto" id="c7etesto"/>
+                </div>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <legend>Eventuali azioni correttive da intraprendere e/o consigliare</legend>
+                <textarea id="azioni_correttive" name="azioni_correttive"></textarea>
+            </fieldset>
+            <br/>
+            <fieldset data-role="collapsible">
+                <h3>Nome e Firma Cliente</h3>
+                <div data-role='controlgroup'>
+                    <h4>Firma per il Cliente:</h4>
+                    <input type="text" id="nome_cliente_firma" name="nome_cliente_firma"/><br/>
+                    <div id="parentsignature" style="overflow:hidden;color:darkblue;background-color:lightgrey;margin-bottom:10px; padding: 5px;max-size: 340px;">
+                        <div id="fcmsig" style="height:padding: 0 0 0 0;margin: 0 0 0 0;border: 2px dotted #000;width: 100%;"></div>
+                    </div>
+                    <input data-theme="a" class="ui-btn-left" type="button" value="Correggi Firma" onclick="$('#fcmsig').jSignature('clear')"/>
+                </div>
+            </fieldset>
+            <div class="ui-block-a"><input type="submit" name="FINEVISITA-SALVA" id="FINEVISITA-SALVA" value="SALVA E INVIA CERTIFICATO" class="btn" data-theme="b"/></div>
+        </form>
+        <div id="signature1"></div>
+    </div>
+</div>
+<!-- (f) fine_visita -->
+
+
+<div data-role="page" id="example">
+
+    <div data-role="panel" id="panel" data-position="right" data-theme="a" data-display="push"></div>
+
+    <div data-role="header">
+        <a href="#home" data-iconpos="notext" data-role="button" data-icon="home" title="Home">Home</a>
+        <h1>A</h1>
+        <a data-iconpos="notext" href="#panel" data-role="button" data-icon="flat-menu"></a>
+    </div>
+
+    <div data-role="content" role="main">
+        <p>Sample text and <a href="#">links</a>.</p>
+        <fieldset class="ui-grid-a">
+            <div class="ui-block-a"><button data-icon="flat-settings" data-theme="a">Button A</button></div>
+            <div class="ui-block-b"><button data-icon="flat-new" data-theme="b">Button B</button></div>
+        </fieldset>
+        <fieldset class="ui-grid-a">
+            <div class="ui-block-a"><button data-icon="flat-man" data-theme="c">Button C</button></div>
+            <div class="ui-block-b"><button data-icon="flat-mail" data-theme="d">Button D</button></div>
+        </fieldset>
+        <fieldset class="ui-grid-a">
+            <div class="ui-block-a"><button data-icon="flat-lock" data-theme="e">Button E</button></div>
+            <div class="ui-block-b"><button data-icon="flat-menu" data-theme="f">Button F</button></div>
+        </fieldset>
+        <fieldset class="ui-grid-a">
+            <div class="ui-block-a"><button data-icon="flat-heart" data-theme="g">Button G</button></div>
+        </fieldset>
+
+        <ul data-role="listview" data-inset="true">
+            <li data-role="list-divider" data-theme="a">List Header</li>
+            <li>Read-only list item</li>
+            <li><a href="#">Linked list item</a></li>
+        </ul>
+
+        <div data-role="collapsible-set" data-theme="b" data-content-theme="b">
+            <div data-role="collapsible" data-collapsed-icon="flat-time" data-expanded-icon="flat-cross" data-collapsed="false">
+                <h3>Section 1</h3>
+                <p>I'm the collapsible content for section 1</p>
+            </div>
+            <div data-role="collapsible" data-collapsed-icon="flat-calendar" data-expanded-icon="flat-cross">
+                <h3>Section 2</h3>
+                <p>I'm the collapsible content for section 2</p>
+            </div>
+            <div data-role="collapsible" data-collapsed-icon="flat-settings" data-expanded-icon="flat-cross">
+                <h3>Section 3</h3>
+                <p>I'm the collapsible content for section 3</p>
+            </div>
+        </div>
+
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup">
+                <input type="radio" name="radio-choice-a" data-theme="c" id="radio-choice-1-a" value="choice-1" checked="checked" />
+                <label for="radio-choice-1-a">Radio 1</label>
+
+                <input type="radio" name="radio-choice-a" data-theme="c" id="radio-choice-1-b" value="choice-2"  />
+                <label for="radio-choice-1-b">Radio 2</label>
+                <input type="checkbox" name="checkbox-a" data-theme="c" id="checkbox-a" checked="checked" />
+                <label for="checkbox-a">Checkbox</label>
+            </fieldset>
+        </div>
+
+        <div data-role="fieldcontain">
+            <a href="#" data-role="button" data-icon="home" data-iconpos="notext" data-theme="b" data-inline="true">Home</a>
+            <a href="#" data-role="button" data-icon="flat-video" data-iconpos="notext" data-theme="b" data-inline="true">Video</a>
+            <a href="#" data-role="button" data-icon="flat-time" data-iconpos="notext" data-theme="b" data-inline="true">Time</a>
+            <a href="#" data-role="button" data-icon="flat-settings" data-iconpos="notext" data-theme="b" data-inline="true">Settings</a>
+            <a href="#" data-role="button" data-icon="flat-plus" data-iconpos="notext" data-theme="b" data-inline="true">Plus</a>
+            <a href="#" data-role="button" data-icon="flat-new" data-iconpos="notext" data-theme="b" data-inline="true">New</a>
+            <a href="#" data-role="button" data-icon="flat-menu" data-iconpos="notext" data-theme="b" data-inline="true">Menu</a>
+            <a href="#" data-role="button" data-icon="flat-man" data-iconpos="notext" data-theme="b" data-inline="true">Man</a>
+            <a href="#" data-role="button" data-icon="flat-mail" data-iconpos="notext" data-theme="b" data-inline="true">Mail</a>
+            <a href="#" data-role="button" data-icon="flat-lock" data-iconpos="notext" data-theme="b" data-inline="true">Lock</a>
+            <a href="#" data-role="button" data-icon="flat-location" data-iconpos="notext" data-theme="b" data-inline="true">Location</a>
+            <a href="#" data-role="button" data-icon="flat-heart" data-iconpos="notext" data-theme="b" data-inline="true">Heart</a>
+            <a href="#" data-role="button" data-icon="flat-eye" data-iconpos="notext" data-theme="b" data-inline="true">Eye</a>
+            <a href="#" data-role="button" data-icon="flat-cross" data-iconpos="notext" data-theme="b" data-inline="true">Cross</a>
+            <a href="#" data-role="button" data-icon="flat-cmd" data-iconpos="notext" data-theme="b" data-inline="true">Cmd</a>
+            <a href="#" data-role="button" data-icon="flat-checkround" data-iconpos="notext" data-theme="b" data-inline="true">Checkround</a>
+            <a href="#" data-role="button" data-icon="flat-calendar" data-iconpos="notext" data-theme="b" data-inline="true">Calendar</a>
+            <a href="#" data-role="button" data-icon="flat-bubble" data-iconpos="notext" data-theme="b" data-inline="true">Bubble</a>
+            <a href="#" data-role="button" data-icon="flat-volume" data-iconpos="notext" data-theme="b" data-inline="true">Volume</a>
+            <a href="#" data-role="button" data-icon="flat-camera" data-iconpos="notext" data-theme="b" data-inline="true">Camera</a>
+        </div>
+
+        <select name="flip-1" id="flip-1" data-role="slider">
+            <option value="off">Off</option>
+            <option value="on" selected>On</option>
+        </select>
+
+        <div data-role="fieldcontain">
+            <div data-role="controlgroup" data-type="horizontal">
+                <a href="#" data-icon="flat-mail" data-theme="a" data-iconpos="notext" data-role="button">Yes</a>
+                <a href="#" data-icon="flat-camera" data-theme="a" data-iconpos="notext" data-role="button">Yes</a>
+                <a href="#" data-icon="flat-heart" data-theme="a" data-iconpos="notext" data-role="button">Yes</a>
+                <a href="#" data-icon="flat-eye" data-theme="a" data-iconpos="notext" data-role="button">Yes</a>
+            </div>
+        </div>
+
+        <div data-role="fieldcontain">
+            <select name="select-choice" id="select-choice-a" data-native-menu="false" data-theme="a">
+                <option value="standard">Option 1</option>
+                <option value="rush">Option 2</option>
+                <option value="express">Option 3</option>
+                <option value="overnight">Option 4</option>
+            </select>
+        </div>
+
+        <input type="text" placeholder="Text Input" />
+        <div data-role="fieldcontain">
+            <input type="range" name="slider" value="50" min="0" max="100" data-highlight="true" />
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

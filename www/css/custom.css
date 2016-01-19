@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+}
+
+div#container {
+    position: absolute;
+    width: 90%;
+    top: 0;
+    bottom: 0;
+}
+
+div[data-role="header"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+div[data-role="content"] {
+    position: absolute;
+    top: 41px;
+    bottom: 58px;
+    left: 0;
+    right: 0;
+}
+
+.scrollable {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.ui-btn.ispezione_vista {
+    background-color:lightskyblue;
+}
+
+/* iOS specific fix, don't use it on Android devices */
+.scrollable > * {
+    -webkit-transform: translateZ(0px);
+}
+
+
